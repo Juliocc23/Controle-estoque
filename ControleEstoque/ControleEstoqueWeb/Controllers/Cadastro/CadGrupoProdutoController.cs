@@ -6,98 +6,61 @@ using System.Web.Mvc;
 
 namespace ControleEstoque.Web.Controllers
 {
-    public class CadastroController : Controller
+    public class CadGrupoProdutoController : Controller
     {
-
         #region Constantes
         private const int _quantMaxLinhasPorPagina = 5;
         private const string _senhaPadrao = "{$127;$188}";
 
         #endregion
-        
-        [Authorize]
-        public ActionResult MarcaProduto()
-        {
-            return View();
-        }
 
+        #region Grupos de produtos
         [Authorize]
-        public ActionResult LocalProduto()
+        public ActionResult Index()
         {
-            return View();
-        }
+            ViewBag.ListaTamanhopagina = new SelectList(new int[] { _quantMaxLinhasPorPagina, 10, 15, 20 }, _quantMaxLinhasPorPagina);
+            ViewBag.QuantMaxLinhasPorPagina = _quantMaxLinhasPorPagina;
+            ViewBag.PaginaAtual = 1;
 
-        [Authorize]
-        public ActionResult UnidadeMedida()
-        {
-            return View();
-        }
+            var lista = GrupoProdutoModel.RecuperarLista(ViewBag.PaginaAtual, _quantMaxLinhasPorPagina);
+            var quant = GrupoProdutoModel.RecuperarQuantidade();
 
-        [Authorize]
-        public ActionResult Produto()
-        {
-            return View();
-        }
+            var difQuantPaginas = (quant % ViewBag.QuantMaxLinhasPorPagina) > 0 ? 1 : 0;
+            ViewBag.QuantPaginas = (quant / ViewBag.QuantMaxLinhasPorPagina) + difQuantPaginas;
 
-        [Authorize]
-        public ActionResult Pais()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public ActionResult Estado()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public ActionResult Cidade()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public ActionResult Fornecedor()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public ActionResult PerfilUsuario()
-        {
-            return View();
-        }
-
-        #region Usuários
-      
-        [Authorize]
-        public ActionResult Usuario()
-        {
-            ViewBag.SenhaPadrao = _senhaPadrao;
-            return View(UsuarioModel.RecuperarLista());
+            return View(lista);
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult RecuperarUsuario(int id)
+        public JsonResult GrupoProdutoPagina(int pagina, int tamanhoPagina)
         {
-            return Json(UsuarioModel.RecuperarPeloId(id));
+            var lista = GrupoProdutoModel.RecuperarLista(pagina, tamanhoPagina);
+
+            return Json(lista);
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirUsuario(int id)
+        public JsonResult RecuperarGrupoProduto(int id)
         {
-            return Json(UsuarioModel.ExcluirPeloId(id));
+            return Json(GrupoProdutoModel.RecuperarPeloId(id));
         }
 
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public ActionResult SalvarUsuario(UsuarioModel model)
+        public JsonResult ExcluirGrupoProduto(int id)
+        {
+            return Json(GrupoProdutoModel.ExcluirPeloId(id));
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public JsonResult SalvarGrupoProduto(GrupoProdutoModel model)
         {
             var resultado = "OK";
             var mensagens = new List<string>();
@@ -112,11 +75,6 @@ namespace ControleEstoque.Web.Controllers
             {
                 try
                 {
-                    if (model.Senha == _senhaPadrao)
-                    {
-                        model.Senha = "";
-                    }
-
                     var id = model.Salvar();
                     if (id > 0)
                     {
