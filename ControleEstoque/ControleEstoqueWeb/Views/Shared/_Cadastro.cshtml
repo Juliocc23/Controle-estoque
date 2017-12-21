@@ -1,10 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@model List<ControleEstoqueWeb.Models.GrupoProdutoModel>
-@{
-    ViewBag.Title = "Cadastro de Grupo de Produtos";
+    ViewBag.Title = "Cadastro de " + ViewBag.Title;
 }
 
 @RenderSection("Styles", true)
@@ -75,4 +71,5 @@
 </div>
 @section Scripts{
     @RenderSection("Scripts", true)
+    <script src="~/Scripts/Cadastro/CadBase.js"></script>
 }
