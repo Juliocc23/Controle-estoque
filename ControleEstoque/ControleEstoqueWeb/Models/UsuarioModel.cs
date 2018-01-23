@@ -73,7 +73,7 @@ namespace ControleEstoqueWeb.Models
             return ret;
         }
 
-        public static List<UsuarioModel> RecuperarLista(int pagina, int tamPagina)
+        public static List<UsuarioModel> RecuperarLista(int pagina = -1, int tamPagina = -1)
         {
             var ret = new List<UsuarioModel>();
 
@@ -85,9 +85,18 @@ namespace ControleEstoqueWeb.Models
                 {
                     var posicao = (pagina - 1) * tamPagina;
                     comando.Connection = conexao;
-                    comando.CommandText = string.Format(
-                        "select * from usuario order by nome offset {0} rows fetch next {1} rows only",
-                        posicao > 0 ? posicao - 1 : 0, tamPagina);
+
+                    if (pagina == -1 || tamPagina == -1)
+                    {
+                        comando.CommandText = "select * from usuario order by nome";
+                    }
+                    else
+                    {
+                        comando.CommandText = string.Format(
+                            "select * from usuario order by nome offset {0} rows fetch next {1} rows only",
+                            posicao > 0 ? posicao - 1 : 0, tamPagina);
+                    }
+
                     var reader = comando.ExecuteReader();
                     while (reader.Read())
                     {
@@ -181,7 +190,7 @@ namespace ControleEstoqueWeb.Models
                         comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
                         comando.Parameters.Add("@login", SqlDbType.VarChar).Value = this.Login;
                         comando.Parameters.Add("@senha", SqlDbType.VarChar).Value = CriptoHelpers.HashMD5(this.Senha);
-
+                        
                         ret = (int)comando.ExecuteScalar();
                     }
                     else
@@ -205,6 +214,33 @@ namespace ControleEstoqueWeb.Models
                         {
                             ret = this.Id;
                         }
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        public string RecuperarStringNomePerfis()
+        {
+            var ret = string.Empty;
+
+            using (var conexao = new SqlConnection())
+            {
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["principal"].ConnectionString;
+                conexao.Open();
+                using (var comando = new SqlCommand())
+                {
+                    comando.Connection = conexao;
+                    comando.CommandText = string.Format(
+                        "select p.nome " +
+                        "from perfil_usuario pu, perfil p " +
+                        "where (pu.id_usuario = @id_usuario) and (pu.id_perfil = p.id) and (p.ativo = 1)");
+                    comando.Parameters.Add("@id_usuario", SqlDbType.Int).Value = this.Id;
+                    var reader = comando.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        ret +=  (ret!=string.Empty ? ";" : string.Empty) + (string)reader["nome"];
                     }
                 }
             }

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace ControleEstoqueWeb.Controllers.Cadastro
 {
+    [Authorize(Roles = "Gerente,Admistrativo,Operador")]
     public class CadUnidadeMedidaController : Controller
     {
         #region Constantes
@@ -15,7 +16,6 @@ namespace ControleEstoqueWeb.Controllers.Cadastro
         #endregion
 
         #region Grupos de produtos
-        [Authorize]
         public ActionResult Index()
         {
             ViewBag.ListaTamanhopagina = new SelectList(new int[] { _quantMaxLinhasPorPagina, 10, 15, 20 }, _quantMaxLinhasPorPagina);
@@ -32,7 +32,6 @@ namespace ControleEstoqueWeb.Controllers.Cadastro
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public JsonResult UnidadeMedidaPagina(int pagina, int tamanhoPagina)
         {
@@ -42,7 +41,6 @@ namespace ControleEstoqueWeb.Controllers.Cadastro
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public JsonResult RecuperarUnidadeMedida(int id)
         {
@@ -50,7 +48,6 @@ namespace ControleEstoqueWeb.Controllers.Cadastro
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public JsonResult ExcluirUnidadeMedida(int id)
         {
@@ -58,7 +55,6 @@ namespace ControleEstoqueWeb.Controllers.Cadastro
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public JsonResult SalvarUnidadeMedida(UnidadeMedidaModel model)
         {

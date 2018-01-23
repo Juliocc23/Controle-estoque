@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace ControleEstoque.Web.Controllers
 {
+    [Authorize(Roles = "Gerente,Admistrativo,Operador")]
     public class CadGrupoProdutoController : Controller
     {
         #region Constantes
@@ -15,7 +16,6 @@ namespace ControleEstoque.Web.Controllers
         #endregion
 
         #region Grupos de produtos
-        [Authorize]
         public ActionResult Index()
         {
             ViewBag.ListaTamanhopagina = new SelectList(new int[] { _quantMaxLinhasPorPagina, 10, 15, 20 }, _quantMaxLinhasPorPagina);
@@ -32,7 +32,6 @@ namespace ControleEstoque.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public JsonResult GrupoProdutoPagina(int pagina, int tamanhoPagina)
         {
@@ -42,7 +41,6 @@ namespace ControleEstoque.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public JsonResult RecuperarGrupoProduto(int id)
         {
@@ -50,7 +48,7 @@ namespace ControleEstoque.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Gerente,Admistrativo")]
         [ValidateAntiForgeryToken]
         public JsonResult ExcluirGrupoProduto(int id)
         {
@@ -58,7 +56,6 @@ namespace ControleEstoque.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public JsonResult SalvarGrupoProduto(GrupoProdutoModel model)
         {

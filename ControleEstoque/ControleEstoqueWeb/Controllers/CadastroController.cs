@@ -27,12 +27,6 @@ namespace ControleEstoque.Web.Controllers
         }
 
         [Authorize]
-        public ActionResult UnidadeMedida()
-        {
-            return View();
-        }
-
-        [Authorize]
         public ActionResult Produto()
         {
             return View();
@@ -58,12 +52,6 @@ namespace ControleEstoque.Web.Controllers
 
         [Authorize]
         public ActionResult Fornecedor()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public ActionResult PerfilUsuario()
         {
             return View();
         }
