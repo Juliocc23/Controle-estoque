@@ -1,18 +1,18 @@
-﻿@model List<ControleEstoqueWeb.Models.UsuarioModel>
+﻿@model List<ControleEstoqueWeb.Models.LocalArmazenamentoModel>
 @{
     Layout = "~/Views/Shared/_Cadastro.cshtml";
-    ViewBag.Title = "Usuário";
+    ViewBag.Title = "Local Armazenamento";
     ViewBag.Lista = Model;
 }
 
 @section Styles {
     <link href="~/Content/bootstrap-select.css" rel="stylesheet" />
-    <link href="~/Content/Cadastro/Usuario.css" rel="stylesheet" />
+    <link href="~/Content/Cadastro/LocalArmazenamento.css" rel="stylesheet" />
 }
 
 @section TituloGrid {
     <th>Nome</th>
-    <th>Login</th>
+    <th>Ativo</th>
     <th>Ação</th>
 }
 
@@ -24,9 +24,11 @@
             linha++;
             if (linha <= ViewBag.QuantMaxLinhasPorPagina)
             {
+                var ativo = (item.Ativo ? "SIM" : "NÃO");
+
                 <tr data-id="@item.Id">
                     <td>@item.Nome</td>
-                    <td>@item.Login</td>
+                    <td>@ativo</td>
                     <td>
                         <a class="btn btn-primary btn-alterar" role="button"><i class="glyphicon glyphicon-pencil"></i> Alterar</a>
                         <a class="btn btn-danger btn-excluir" role="button"><i class="glyphicon glyphicon-trash"></i> Excluir</a>
@@ -38,7 +40,7 @@
                 break;
             }
         }
-    }   
+    }
 }
 
 @section CamposCadastro {
@@ -50,15 +52,9 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.Label("txt_login", "Login", new { @class = "col-md-3 control-label" })
+            @Html.Label("cbx_ativo", "Ativo", new { @class = "col-md-3 control-label" })
             <div class="col-md-12">
-                @Html.TextBox("txt_login", null, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.Label("txt_senha", "Senha", new { @class = "col-md-3 control-label" })
-            <div class="col-md-12">
-                @Html.TextBox("txt_senha", null, new { @class = "form-control", type = "password" })
+                @Html.CheckBox("cbx_ativo")
             </div>
         </div>
     </div>
@@ -66,14 +62,14 @@
 
 @section Scripts {
     <script src="~/Scripts/bootstrap-select.js"></script>
-    <script src="~/Scripts/Cadastro/Usuario.js"></script>
+    <script src="~/Scripts/Cadastro/LocalArmazenamento.js"></script>
     <script>
             var tituloPagina = '@ViewBag.Title';
-            var url_excluir = '@Url.Action("ExcluirUsuario", "CadUsuario")';
-            var url_alterar = '@Url.Action("RecuperarUsuario", "CadUsuario")';
-            var url_confirmar = '@Url.Action("SalvarUsuario", "CadUsuario")';
-            var url_page_click = '@Url.Action("UsuarioPagina", "CadUsuario")';
-            var url_tamanho_pagina_change = '@Url.Action("UsuarioPagina", "CadUsuario")';
+            var url_excluir = '@Url.Action("ExcluirLocalArmazenamento", "CadLocalArmazenamento")';
+            var url_alterar = '@Url.Action("RecuperarLocalArmazenamento", "CadLocalArmazenamento")';
+            var url_confirmar = '@Url.Action("SalvarLocalArmazenamento", "CadLocalArmazenamento")';
+            var url_page_click = '@Url.Action("LocalArmazenamentoPagina", "CadLocalArmazenamento")';
+            var url_tamanho_pagina_change = '@Url.Action("GrupoProdutoPagina", "CadLocalArmazenamento")';
 
     </script>
 }
