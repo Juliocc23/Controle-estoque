@@ -120,7 +120,7 @@ namespace ControleEstoqueWeb.Models
         {
             var ret = 0;
 
-            var model = RecuperarPeloId(Id);
+            var model = RecuperarPeloId(this.Id);
 
             using (var conexao = new SqlConnection())
             {

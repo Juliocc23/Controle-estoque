@@ -10,8 +10,8 @@ namespace ControleEstoque.Web.Controllers
     public class CadGrupoProdutoController : Controller
     {
         #region Constantes
+
         private const int _quantMaxLinhasPorPagina = 5;
-        private const string _senhaPadrao = "{$127;$188}";
 
         #endregion
 
@@ -33,9 +33,9 @@ namespace ControleEstoque.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult GrupoProdutoPagina(int pagina, int tamanhoPagina)
+        public JsonResult GrupoProdutoPagina(int pagina, int tamanhoPagina, string filtro)
         {
-            var lista = GrupoProdutoModel.RecuperarLista(pagina, tamanhoPagina);
+            var lista = GrupoProdutoModel.RecuperarLista(pagina, tamanhoPagina, filtro);
 
             return Json(lista);
         }

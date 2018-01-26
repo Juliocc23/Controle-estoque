@@ -23,6 +23,7 @@ namespace ControleEstoqueWeb.Models
         #endregion
 
         #region Metódos
+
         public static int RecuperarQuantidade()
         {
             var ret = 0;
@@ -125,7 +126,7 @@ namespace ControleEstoqueWeb.Models
         {
             var ret = 0;
 
-            var model = RecuperarPeloId(Id);
+            var model = RecuperarPeloId(this.Id);
 
             using (var conexao = new SqlConnection())
             {
@@ -159,6 +160,7 @@ namespace ControleEstoqueWeb.Models
 
             return ret;
         }
+
         #endregion
     }
 }

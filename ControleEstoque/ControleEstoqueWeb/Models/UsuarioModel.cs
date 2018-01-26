@@ -10,6 +10,7 @@ namespace ControleEstoqueWeb.Models
     public class UsuarioModel
     {
         #region Propriedades
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Login é obrigatório.")]
@@ -20,9 +21,11 @@ namespace ControleEstoqueWeb.Models
 
         [Required(ErrorMessage = "Nome é obrigatório.")]
         public string Nome { get; set; }
+
         #endregion
 
         #region Métodos
+
         public static UsuarioModel ValidarUsuario(string login, string senha)
         {
             UsuarioModel ret = null;

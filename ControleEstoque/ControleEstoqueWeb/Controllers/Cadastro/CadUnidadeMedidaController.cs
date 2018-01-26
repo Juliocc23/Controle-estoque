@@ -10,12 +10,13 @@ namespace ControleEstoqueWeb.Controllers.Cadastro
     public class CadUnidadeMedidaController : Controller
     {
         #region Constantes
+
         private const int _quantMaxLinhasPorPagina = 5;
-        private const string _senhaPadrao = "{$127;$188}";
 
         #endregion
 
         #region Grupos de produtos
+
         public ActionResult Index()
         {
             ViewBag.ListaTamanhopagina = new SelectList(new int[] { _quantMaxLinhasPorPagina, 10, 15, 20 }, _quantMaxLinhasPorPagina);

@@ -10,11 +10,13 @@ namespace ControleEstoqueWeb.Controllers.Cadastro
     public class CadPerfilController : Controller
     {
         #region Constantes
+
         private const int _quantMaxLinhasPorPagina = 5;
 
         #endregion
 
         #region Grupos de produtos
+
         public ActionResult Index()
         {
             ViewBag.ListaUsuario = UsuarioModel.RecuperarLista();
@@ -59,7 +61,7 @@ namespace ControleEstoqueWeb.Controllers.Cadastro
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult SalvarPerfil(PerfilModel model)
+        public JsonResult SalvarPerfil(PerfilModel model, List<int> idUsuarios)
         {
             var resultado = "OK";
             var mensagens = new List<string>();
@@ -72,6 +74,19 @@ namespace ControleEstoqueWeb.Controllers.Cadastro
             }
             else
             {
+                model.Usuarios = new List<UsuarioModel>();
+                if (idUsuarios == null || idUsuarios.Count == 0)
+                {
+                    model.Usuarios.Add(new UsuarioModel() { Id = -1 });
+                }
+                else
+                {
+                    foreach (var id in idUsuarios)
+                    {
+                        model.Usuarios.Add(new UsuarioModel() { Id = id });
+                    }
+                }
+
                 try
                 {
                     var id = model.Salvar();

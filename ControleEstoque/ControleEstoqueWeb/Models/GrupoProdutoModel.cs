@@ -37,7 +37,7 @@ namespace ControleEstoqueWeb.Models
             return ret;
         }
 
-        public static List<GrupoProdutoModel> RecuperarLista(int pagina, int tamPagina)
+        public static List<GrupoProdutoModel> RecuperarLista(int pagina, int tamPagina, string filtro = "")
         {
             var ret = new List<GrupoProdutoModel>();
 
@@ -48,9 +48,15 @@ namespace ControleEstoqueWeb.Models
                 using (var comando = new SqlCommand())
                 {
                     var posicao = (pagina - 1) * tamPagina;
+
+                    var filtroWhere = string.IsNullOrEmpty(filtro) ? "" : string.Format(" where lower(nome) like '%{0}%'", filtro.ToLower());
                     comando.Connection = conexao;
                     comando.CommandText = string.Format(
-                        "select * from grupo_produto order by nome offset {0} rows fetch next {1} rows only",
+                        "select *" +
+                        " from grupo_produto" +
+                        filtroWhere +
+                        " order by nome" +
+                        " offset {0} rows fetch next {1} rows only",
                         posicao > 0 ? posicao - 1 : 0, tamPagina);
                     var reader = comando.ExecuteReader();
                     while (reader.Read())
@@ -120,7 +126,7 @@ namespace ControleEstoqueWeb.Models
         {
             var ret = 0;
 
-            var model = RecuperarPeloId(Id);
+            var model = RecuperarPeloId(this.Id);
 
             using (var conexao = new SqlConnection())
             {

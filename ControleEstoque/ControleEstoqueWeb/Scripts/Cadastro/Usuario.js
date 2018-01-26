@@ -17,6 +17,7 @@ function get_dados_inclusao() {
     return {
         Id: 0,
         Nome: '',
+        Login: '',
         Senha: ''
     };
 }

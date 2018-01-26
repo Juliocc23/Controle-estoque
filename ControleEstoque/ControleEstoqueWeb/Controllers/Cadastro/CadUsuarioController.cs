@@ -11,6 +11,7 @@ namespace ControleEstoque.Web.Controllers
     {
 
         #region Constantes
+
         private const int _quantMaxLinhasPorPagina = 5;
         private const string _senhaPadrao = "{$127;$188}";
 
